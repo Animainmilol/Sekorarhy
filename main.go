@@ -6,12 +6,22 @@ const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
 
+	SquareSize             = 50
+	TeleportDistance       = 100
+	LongTeleportMultiplier = 2
+
 	MaxZoom       = 15
 	MinZoom       = -0.9
 	RotationSpeed = 10
 	ZoomSpeed     = 2
 	CameraSpeed   = 8
 )
+
+type SquareController struct {
+	rectangle        rl.Rectangle
+	color            rl.Color
+	teleportDistance float32
+}
 
 type CameraController struct {
 	camera         rl.Camera2D
@@ -38,6 +48,14 @@ func (cc *CameraController) updateCamera() {
 	cc.camera.Rotation = cc.manualRotation
 }
 
+func newSquareController() *SquareController {
+	return &SquareController{
+		rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
+		color:            rl.White,
+		teleportDistance: TeleportDistance,
+	}
+}
+
 func newCameraController() *CameraController {
 	return &CameraController{
 		camera: rl.Camera2D{
@@ -58,13 +76,20 @@ func main() {
 	rl.SetTargetFPS(240)
 
 	cameraController := newCameraController()
+	squareController := newSquareController()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
 		cameraController.updateCamera()
 
-		rl.ClearBackground(rl.RayWhite)
+		rl.ClearBackground(rl.Black)
+
+		rl.BeginMode2D(cameraController.camera)
+
+		rl.DrawRectangleRec(squareController.rectangle, squareController.color)
+
+		rl.EndMode2D()
 
 		rl.EndDrawing()
 	}

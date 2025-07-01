@@ -2,8 +2,13 @@ package main
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
+const (
+	InitWindowWidth  = 800
+	InitWindowHeight = 450
+)
+
 func main() {
-	rl.InitWindow(800, 450, "Sekorathy")
+	rl.InitWindow(InitWindowWidth, InitWindowHeight, "Sekorathy")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(240)

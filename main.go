@@ -9,6 +9,7 @@ const (
 
 func main() {
 	rl.InitWindow(InitWindowWidth, InitWindowHeight, "Sekorathy")
+	rl.SetWindowState(rl.FlagWindowResizable)
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(240)

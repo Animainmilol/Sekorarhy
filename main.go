@@ -31,6 +31,10 @@ type CameraController struct {
 	speed          float32
 }
 
+type World struct {
+	tiles map[[2]int32]rl.Color
+}
+
 func (sc *SquareController) handleSquareMovementInput() {
 	if rl.IsKeyPressed(rl.KeyRight) {
 		sc.rectangle.X += sc.teleportDistance
@@ -71,6 +75,39 @@ func (cc *CameraController) handleCameraControlInput() {
 	}
 	if rl.IsKeyDown(rl.KeyX) {
 		cc.manualZoom = max(cc.manualZoom-ZoomSpeed*rl.GetFrameTime(), MinZoom)
+	}
+}
+
+func drawWorld(w World, cc CameraController) {
+	screenWidth := float32(rl.GetRenderWidth())
+	screenHeight := float32(rl.GetRenderHeight())
+
+	// Calculate world coordinates of the render corners
+	topLeft := rl.GetScreenToWorld2D(rl.NewVector2(0, 0), cc.camera)
+	topRight := rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, 0), cc.camera)
+	bottomRight := rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, screenHeight), cc.camera)
+	bottomLeft := rl.GetScreenToWorld2D(rl.NewVector2(0, screenHeight), cc.camera)
+
+	// Convert to tile coordinates (2 is padding)
+	startX := int32(min(topLeft.X, bottomLeft.X)/SquareSize) - 2
+	startY := int32(min(topLeft.Y, bottomLeft.Y)/SquareSize) - 2
+	endX := int32(max(topRight.X, bottomRight.X)/SquareSize) + 2
+	endY := int32(max(topRight.Y, bottomRight.Y)/SquareSize) + 2
+
+	visibleTiles := make(map[[2]int32]rl.Color)
+
+	for x := startX; x <= endX; x++ {
+		for y := startY; y <= endY; y++ {
+			color, exists := w.tiles[[2]int32{x, y}]
+			if exists {
+				visibleTiles[[2]int32{x, y}] = color
+			}
+		}
+	}
+
+	for coordinates, color := range visibleTiles {
+		x, y := coordinates[0], coordinates[1]
+		rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, color)
 	}
 }
 
@@ -127,6 +164,18 @@ func main() {
 	cameraController := newCameraController()
 	squareController := newSquareController()
 
+	world := World{
+		tiles: make(map[[2]int32]rl.Color),
+	}
+
+	// test
+	gridSize := int32(1000)
+	for y := int32(0); y < gridSize; y++ {
+		for x := int32(0); x < gridSize; x++ {
+			world.tiles[[2]int32{x, y}] = rl.Red
+		}
+	}
+
 	for !rl.WindowShouldClose() {
 		squareController.handleSquareMovementInput()
 		cameraController.handleCameraControlInput()
@@ -144,6 +193,7 @@ func main() {
 
 		rl.BeginMode2D(cameraController.camera)
 
+		drawWorld(world, *cameraController)
 		rl.DrawRectangleRec(squareController.rectangle, squareController.color)
 
 		rl.EndMode2D()

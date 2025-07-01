@@ -31,6 +31,49 @@ type CameraController struct {
 	speed          float32
 }
 
+func (sc *SquareController) handleSquareMovementInput() {
+	if rl.IsKeyPressed(rl.KeyRight) {
+		sc.rectangle.X += sc.teleportDistance
+	}
+	if rl.IsKeyPressed(rl.KeyLeft) {
+		sc.rectangle.X -= sc.teleportDistance
+	}
+	if rl.IsKeyPressed(rl.KeyDown) {
+		sc.rectangle.Y += sc.teleportDistance
+	}
+	if rl.IsKeyPressed(rl.KeyUp) {
+		sc.rectangle.Y -= sc.teleportDistance
+	}
+
+	if rl.IsKeyPressed(rl.KeyD) {
+		sc.rectangle.X += sc.teleportDistance * LongTeleportMultiplier
+	}
+	if rl.IsKeyPressed(rl.KeyA) {
+		sc.rectangle.X -= sc.teleportDistance * LongTeleportMultiplier
+	}
+	if rl.IsKeyPressed(rl.KeyS) {
+		sc.rectangle.Y += sc.teleportDistance * LongTeleportMultiplier
+	}
+	if rl.IsKeyPressed(rl.KeyW) {
+		sc.rectangle.Y -= sc.teleportDistance * LongTeleportMultiplier
+	}
+}
+
+func (cc *CameraController) handleCameraControlInput() {
+	if rl.IsKeyDown(rl.KeyQ) {
+		cc.manualRotation += RotationSpeed * rl.GetFrameTime()
+	}
+	if rl.IsKeyDown(rl.KeyE) {
+		cc.manualRotation -= RotationSpeed * rl.GetFrameTime()
+	}
+	if rl.IsKeyDown(rl.KeyZ) {
+		cc.manualZoom = min(cc.manualZoom+ZoomSpeed*rl.GetFrameTime(), MaxZoom)
+	}
+	if rl.IsKeyDown(rl.KeyX) {
+		cc.manualZoom = max(cc.manualZoom-ZoomSpeed*rl.GetFrameTime(), MinZoom)
+	}
+}
+
 func (cc *CameraController) updateCamera() {
 	// Center the camera
 	screenWidth := float32(rl.GetRenderWidth())
@@ -85,6 +128,9 @@ func main() {
 	squareController := newSquareController()
 
 	for !rl.WindowShouldClose() {
+		squareController.handleSquareMovementInput()
+		cameraController.handleCameraControlInput()
+
 		rl.BeginDrawing()
 
 		cameraController.updateCamera()

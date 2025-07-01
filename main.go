@@ -48,6 +48,12 @@ func (cc *CameraController) updateCamera() {
 	cc.camera.Rotation = cc.manualRotation
 }
 
+func cameraFollow(cc *CameraController, x float32, y float32) {
+	cameraSpeed := cc.speed * rl.GetFrameTime()
+	cc.camera.Target.X += (x - cc.camera.Target.X) * cameraSpeed
+	cc.camera.Target.Y += (y - cc.camera.Target.Y) * cameraSpeed
+}
+
 func newSquareController() *SquareController {
 	return &SquareController{
 		rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
@@ -82,6 +88,11 @@ func main() {
 		rl.BeginDrawing()
 
 		cameraController.updateCamera()
+		cameraFollow(
+			cameraController,
+			squareController.rectangle.X+squareController.rectangle.Width/2,
+			squareController.rectangle.Y+squareController.rectangle.Height/2,
+		)
 
 		rl.ClearBackground(rl.Black)
 

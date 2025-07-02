@@ -10,11 +10,12 @@ const (
 	TeleportDistance       = 100
 	LongTeleportMultiplier = 2
 
-	MaxZoom       = 15
-	MinZoom       = -0.9
-	RotationSpeed = 10
-	ZoomSpeed     = 2
-	CameraSpeed   = 8
+	MaxZoom            = 15
+	MinZoom            = -0.9
+	RotationSpeed      = 30
+	ZoomSpeed          = 2
+	CameraSpeed        = 8
+	WorldRenderPadding = 2
 )
 
 type SquareController struct {
@@ -109,11 +110,11 @@ func drawWorld(w World, cc CameraController) {
 		}
 	}
 
-	// Convert to tile coordinates (2 is padding)
-	startX := int32(minX/SquareSize) - 2
-	startY := int32(minY/SquareSize) - 2
-	endX := int32(maxX/SquareSize) + 2
-	endY := int32(maxY/SquareSize) + 2
+	// Convert to tile coordinates
+	startX := int32(minX/SquareSize) - WorldRenderPadding
+	startY := int32(minY/SquareSize) - WorldRenderPadding
+	endX := int32(maxX/SquareSize) + WorldRenderPadding
+	endY := int32(maxY/SquareSize) + WorldRenderPadding
 
 	visibleTiles := make(map[[2]int32]rl.Color)
 

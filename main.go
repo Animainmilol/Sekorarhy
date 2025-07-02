@@ -141,7 +141,7 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	// Calculate world coordinates of cursor
 	cursorPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.camera)
 
-	// idk why floor here tho
+	// Floor is for negatives
 	y := int32(math.Floor(float64(cursorPos.Y / SquareSize)))
 	x := int32(math.Floor(float64(cursorPos.X / SquareSize)))
 

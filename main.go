@@ -23,71 +23,76 @@ const (
 )
 
 type SquareController struct {
-	rectangle        rl.Rectangle
-	color            rl.Color
-	teleportDistance float32
+	Rectangle        rl.Rectangle
+	Color            rl.Color
+	TeleportDistance float32
 }
 
 type CameraController struct {
-	camera         rl.Camera2D
-	manualOffset   rl.Vector2
-	manualRotation float32
-	manualZoom     float32
-	speed          float32
+	Camera         rl.Camera2D
+	ManualOffset   rl.Vector2
+	ManualRotation float32
+	ManualZoom     float32
+	Speed          float32
 }
 
 type World struct {
 	tiles map[[2]int32]rl.Color
 }
 
+type Tile struct {
+	Type    string
+	Texture rl.Image
+}
+
 func (sc *SquareController) handleSquareMovementInput(s rl.Sound) {
 	if rl.IsKeyPressed(rl.KeyRight) {
-		sc.rectangle.X += sc.teleportDistance
+		sc.Rectangle.X += sc.TeleportDistance
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyLeft) {
-		sc.rectangle.X -= sc.teleportDistance
+		sc.Rectangle.X -= sc.TeleportDistance
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyDown) {
-		sc.rectangle.Y += sc.teleportDistance
+		sc.Rectangle.Y += sc.TeleportDistance
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyUp) {
-		sc.rectangle.Y -= sc.teleportDistance
+		sc.Rectangle.Y -= sc.TeleportDistance
 		rl.PlaySound(s)
 	}
 
 	if rl.IsKeyPressed(rl.KeyD) {
-		sc.rectangle.X += sc.teleportDistance * LongTeleportMultiplier
+		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyA) {
-		sc.rectangle.X -= sc.teleportDistance * LongTeleportMultiplier
+		sc.Rectangle.X -= sc.TeleportDistance * LongTeleportMultiplier
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyS) {
-		sc.rectangle.Y += sc.teleportDistance * LongTeleportMultiplier
+		sc.Rectangle.Y += sc.TeleportDistance * LongTeleportMultiplier
 		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyW) {
-		sc.rectangle.Y -= sc.teleportDistance * LongTeleportMultiplier
+		sc.Rectangle.Y -= sc.TeleportDistance * LongTeleportMultiplier
 		rl.PlaySound(s)
 	}
 }
 
 func (cc *CameraController) handleCameraControlInput() {
 	if rl.IsKeyDown(rl.KeyQ) {
-		cc.manualRotation += RotationSpeed * rl.GetFrameTime()
+		cc.ManualRotation += RotationSpeed * rl.GetFrameTime()
 	}
 	if rl.IsKeyDown(rl.KeyE) {
-		cc.manualRotation -= RotationSpeed * rl.GetFrameTime()
+		cc.ManualRotation -= RotationSpeed * rl.GetFrameTime()
 	}
 	if rl.IsKeyDown(rl.KeyZ) {
-		cc.manualZoom = min(cc.manualZoom+ZoomSpeed*rl.GetFrameTime(), MaxZoom)
+		cc.ManualZoom = min(cc.ManualZoom+ZoomSpeed*rl.GetFrameTime(), MaxZoom)
 	}
 	if rl.IsKeyDown(rl.KeyX) {
-		cc.manualZoom = max(cc.manualZoom-ZoomSpeed*rl.GetFrameTime(), MinZoom)
+		cc.ManualZoom = max(cc.ManualZoom-ZoomSpeed*rl.GetFrameTime(), MinZoom)
 	}
 }
 
@@ -96,10 +101,10 @@ func drawWorld(w World, cc CameraController) {
 	screenHeight := float32(rl.GetRenderHeight())
 
 	corners := [4]rl.Vector2{
-		rl.GetScreenToWorld2D(rl.NewVector2(0, 0), cc.camera),                      // top-left
-		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, 0), cc.camera),            // top-right
-		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, screenHeight), cc.camera), // bottom-right
-		rl.GetScreenToWorld2D(rl.NewVector2(0, screenHeight), cc.camera),           // bottom-left
+		rl.GetScreenToWorld2D(rl.NewVector2(0, 0), cc.Camera),                      // top-left
+		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, 0), cc.Camera),            // top-right
+		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, screenHeight), cc.Camera), // bottom-right
+		rl.GetScreenToWorld2D(rl.NewVector2(0, screenHeight), cc.Camera),           // bottom-left
 	}
 
 	minX := corners[0].X
@@ -147,7 +152,7 @@ func drawWorld(w World, cc CameraController) {
 
 func placeTilesUsingCursor(w World, cc CameraController) {
 	// Calculate world coordinates of cursor
-	cursorPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.camera)
+	cursorPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.Camera)
 
 	// Floor is for negatives
 	y := int32(math.Floor(float64(cursorPos.Y / SquareSize)))
@@ -173,34 +178,34 @@ func (cc *CameraController) updateCamera() {
 	scale := max(widthScale, heightScale)
 	scalingZoom := scale
 
-	cc.camera.Offset = rl.Vector2Add(centeringOffset, cc.manualOffset)
-	cc.camera.Zoom = scalingZoom + cc.manualZoom*scale
-	cc.camera.Rotation = cc.manualRotation
+	cc.Camera.Offset = rl.Vector2Add(centeringOffset, cc.ManualOffset)
+	cc.Camera.Zoom = scalingZoom + cc.ManualZoom*scale
+	cc.Camera.Rotation = cc.ManualRotation
 }
 
 func cameraFollow(cc *CameraController, x float32, y float32) {
-	cameraSpeed := cc.speed * rl.GetFrameTime()
-	cc.camera.Target.X += (x - cc.camera.Target.X) * cameraSpeed
-	cc.camera.Target.Y += (y - cc.camera.Target.Y) * cameraSpeed
+	cameraSpeed := cc.Speed * rl.GetFrameTime()
+	cc.Camera.Target.X += (x - cc.Camera.Target.X) * cameraSpeed
+	cc.Camera.Target.Y += (y - cc.Camera.Target.Y) * cameraSpeed
 }
 
 func newSquareController() *SquareController {
 	return &SquareController{
-		rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
-		color:            rl.White,
-		teleportDistance: TeleportDistance,
+		Rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
+		Color:            rl.White,
+		TeleportDistance: TeleportDistance,
 	}
 }
 
 func newCameraController() *CameraController {
 	return &CameraController{
-		camera: rl.Camera2D{
+		Camera: rl.Camera2D{
 			Offset:   rl.NewVector2(0, 0),
 			Target:   rl.NewVector2(0, 0),
 			Rotation: 0,
 			Zoom:     1,
 		},
-		speed: CameraSpeed,
+		Speed: CameraSpeed,
 	}
 }
 
@@ -242,16 +247,16 @@ func main() {
 		cameraController.updateCamera()
 		cameraFollow(
 			cameraController,
-			squareController.rectangle.X+squareController.rectangle.Width/2,
-			squareController.rectangle.Y+squareController.rectangle.Height/2,
+			squareController.Rectangle.X+squareController.Rectangle.Width/2,
+			squareController.Rectangle.Y+squareController.Rectangle.Height/2,
 		)
 
 		rl.ClearBackground(rl.Black)
 
-		rl.BeginMode2D(cameraController.camera)
+		rl.BeginMode2D(cameraController.Camera)
 
 		drawWorld(world, *cameraController)
-		rl.DrawRectangleRec(squareController.rectangle, squareController.color)
+		rl.DrawRectangleRec(squareController.Rectangle, squareController.Color)
 
 		rl.EndMode2D()
 

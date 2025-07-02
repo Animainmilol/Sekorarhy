@@ -40,31 +40,39 @@ type World struct {
 	tiles map[[2]int32]rl.Color
 }
 
-func (sc *SquareController) handleSquareMovementInput() {
+func (sc *SquareController) handleSquareMovementInput(s rl.Sound) {
 	if rl.IsKeyPressed(rl.KeyRight) {
 		sc.rectangle.X += sc.teleportDistance
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyLeft) {
 		sc.rectangle.X -= sc.teleportDistance
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyDown) {
 		sc.rectangle.Y += sc.teleportDistance
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyUp) {
 		sc.rectangle.Y -= sc.teleportDistance
+		rl.PlaySound(s)
 	}
 
 	if rl.IsKeyPressed(rl.KeyD) {
 		sc.rectangle.X += sc.teleportDistance * LongTeleportMultiplier
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyA) {
 		sc.rectangle.X -= sc.teleportDistance * LongTeleportMultiplier
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyS) {
 		sc.rectangle.Y += sc.teleportDistance * LongTeleportMultiplier
+		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyW) {
 		sc.rectangle.Y -= sc.teleportDistance * LongTeleportMultiplier
+		rl.PlaySound(s)
 	}
 }
 
@@ -206,6 +214,12 @@ func main() {
 	cameraController := newCameraController()
 	squareController := newSquareController()
 
+	rl.InitAudioDevice()
+	defer rl.CloseAudioDevice()
+
+	sound := rl.LoadSound("sound.wav")
+	defer rl.UnloadSound(sound)
+
 	world := World{
 		tiles: make(map[[2]int32]rl.Color),
 	}
@@ -219,7 +233,7 @@ func main() {
 	}
 
 	for !rl.WindowShouldClose() {
-		squareController.handleSquareMovementInput()
+		squareController.handleSquareMovementInput(sound)
 		cameraController.handleCameraControlInput()
 		placeTilesUsingCursor(world, *cameraController)
 

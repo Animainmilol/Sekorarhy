@@ -82,17 +82,38 @@ func drawWorld(w World, cc CameraController) {
 	screenWidth := float32(rl.GetRenderWidth())
 	screenHeight := float32(rl.GetRenderHeight())
 
-	// Calculate world coordinates of the render corners
-	topLeft := rl.GetScreenToWorld2D(rl.NewVector2(0, 0), cc.camera)
-	topRight := rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, 0), cc.camera)
-	bottomRight := rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, screenHeight), cc.camera)
-	bottomLeft := rl.GetScreenToWorld2D(rl.NewVector2(0, screenHeight), cc.camera)
+	corners := [4]rl.Vector2{
+		rl.GetScreenToWorld2D(rl.NewVector2(0, 0), cc.camera),                      // top-left
+		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, 0), cc.camera),            // top-right
+		rl.GetScreenToWorld2D(rl.NewVector2(screenWidth, screenHeight), cc.camera), // bottom-right
+		rl.GetScreenToWorld2D(rl.NewVector2(0, screenHeight), cc.camera),           // bottom-left
+	}
+
+	minX := corners[0].X
+	maxX := corners[0].X
+	minY := corners[0].Y
+	maxY := corners[0].Y
+
+	for _, corner := range corners[1:] {
+		if corner.X < minX {
+			minX = corner.X
+		}
+		if corner.X > maxX {
+			maxX = corner.X
+		}
+		if corner.Y < minY {
+			minY = corner.Y
+		}
+		if corner.Y > maxY {
+			maxY = corner.Y
+		}
+	}
 
 	// Convert to tile coordinates (2 is padding)
-	startX := int32(min(topLeft.X, bottomLeft.X)/SquareSize) - 2
-	startY := int32(min(topLeft.Y, bottomLeft.Y)/SquareSize) - 2
-	endX := int32(max(topRight.X, bottomRight.X)/SquareSize) + 2
-	endY := int32(max(topRight.Y, bottomRight.Y)/SquareSize) + 2
+	startX := int32(min(minX)/SquareSize) - 2
+	startY := int32(min(minY)/SquareSize) - 2
+	endX := int32(max(maxX)/SquareSize) + 2
+	endY := int32(max(maxY)/SquareSize) + 2
 
 	visibleTiles := make(map[[2]int32]rl.Color)
 

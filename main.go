@@ -1,6 +1,10 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const (
 	InitWindowWidth  = 800
@@ -133,6 +137,22 @@ func drawWorld(w World, cc CameraController) {
 	}
 }
 
+func placeTilesUsingCursor(w World, cc CameraController) {
+	// Calculate world coordinates of cursor
+	cursorPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.camera)
+
+	// idk why floor here tho
+	y := int32(math.Floor(float64(cursorPos.Y / SquareSize)))
+	x := int32(math.Floor(float64(cursorPos.X / SquareSize)))
+
+	if rl.IsKeyDown(rl.KeyC) {
+		w.tiles[[2]int32{x, y}] = rl.White
+	}
+	if rl.IsKeyDown(rl.KeyV) {
+		w.tiles[[2]int32{x, y}] = rl.Red
+	}
+}
+
 func (cc *CameraController) updateCamera() {
 	// Center the camera
 	screenWidth := float32(rl.GetRenderWidth())
@@ -201,6 +221,7 @@ func main() {
 	for !rl.WindowShouldClose() {
 		squareController.handleSquareMovementInput()
 		cameraController.handleCameraControlInput()
+		placeTilesUsingCursor(world, *cameraController)
 
 		rl.BeginDrawing()
 

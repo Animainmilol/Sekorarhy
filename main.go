@@ -110,10 +110,10 @@ func drawWorld(w World, cc CameraController) {
 	}
 
 	// Convert to tile coordinates (2 is padding)
-	startX := int32(min(minX)/SquareSize) - 2
-	startY := int32(min(minY)/SquareSize) - 2
-	endX := int32(max(maxX)/SquareSize) + 2
-	endY := int32(max(maxY)/SquareSize) + 2
+	startX := int32(minX/SquareSize) - 2
+	startY := int32(minY/SquareSize) - 2
+	endX := int32(maxX/SquareSize) + 2
+	endY := int32(maxY/SquareSize) + 2
 
 	visibleTiles := make(map[[2]int32]rl.Color)
 

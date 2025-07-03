@@ -44,7 +44,7 @@ type Tile struct {
 	Type string
 }
 
-func (sc *SquareController) handleSquareMovementInput(s rl.Sound) {
+func (sc *SquareController) handleInput(s rl.Sound) {
 	if rl.IsKeyPressed(rl.KeyRight) {
 		sc.Rectangle.X += sc.TeleportDistance
 		rl.PlaySound(s)
@@ -80,7 +80,7 @@ func (sc *SquareController) handleSquareMovementInput(s rl.Sound) {
 	}
 }
 
-func (cc *CameraController) handleCameraControlInput() {
+func (cc *CameraController) handleInput() {
 	if rl.IsKeyDown(rl.KeyQ) {
 		cc.ManualRotation += RotationSpeed * rl.GetFrameTime()
 	}
@@ -243,8 +243,8 @@ func main() {
 	}
 
 	for !rl.WindowShouldClose() {
-		squareController.handleSquareMovementInput(sound)
-		cameraController.handleCameraControlInput()
+		squareController.handleInput(sound)
+		cameraController.handleInput()
 		placeTilesUsingCursor(world, *cameraController)
 
 		rl.BeginDrawing()

@@ -37,12 +37,11 @@ type CameraController struct {
 }
 
 type World struct {
-	tiles map[[2]int32]rl.Color
+	tiles map[[2]int32]Tile
 }
 
 type Tile struct {
-	Type    string
-	Texture rl.Image
+	Type string
 }
 
 func (sc *SquareController) handleSquareMovementInput(s rl.Sound) {
@@ -133,20 +132,25 @@ func drawWorld(w World, cc CameraController) {
 	endX := int32(maxX/SquareSize) + WorldRenderPadding
 	endY := int32(maxY/SquareSize) + WorldRenderPadding
 
-	visibleTiles := make(map[[2]int32]rl.Color)
+	visibleTiles := make(map[[2]int32]Tile)
 
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			color, exists := w.tiles[[2]int32{x, y}]
+			tile, exists := w.tiles[[2]int32{x, y}]
 			if exists {
-				visibleTiles[[2]int32{x, y}] = color
+				visibleTiles[[2]int32{x, y}] = tile
 			}
 		}
 	}
 
-	for coordinates, color := range visibleTiles {
+	for coordinates, tile := range visibleTiles {
 		x, y := coordinates[0], coordinates[1]
-		rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, color)
+		switch tile.Type {
+		case "dot":
+			rl.DrawCircle(x*SquareSize+SquareSize/2, y*SquareSize+SquareSize/2, SquareSize/2, rl.White)
+		case "box":
+			rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, rl.White)
+		}
 	}
 }
 
@@ -159,10 +163,10 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	x := int32(math.Floor(float64(cursorPos.X / SquareSize)))
 
 	if rl.IsKeyDown(rl.KeyC) {
-		w.tiles[[2]int32{x, y}] = rl.White
+		w.tiles[[2]int32{x, y}] = Tile{"dot"}
 	}
 	if rl.IsKeyDown(rl.KeyV) {
-		w.tiles[[2]int32{x, y}] = rl.Red
+		w.tiles[[2]int32{x, y}] = Tile{"box"}
 	}
 }
 
@@ -226,14 +230,14 @@ func main() {
 	defer rl.UnloadSound(sound)
 
 	world := World{
-		tiles: make(map[[2]int32]rl.Color),
+		tiles: make(map[[2]int32]Tile),
 	}
 
 	// test
 	gridSize := int32(1000)
 	for y := int32(0); y < gridSize; y++ {
 		for x := int32(0); x < gridSize; x++ {
-			world.tiles[[2]int32{x, y}] = rl.Red
+			world.tiles[[2]int32{x, y}] = Tile{"dot"}
 		}
 	}
 

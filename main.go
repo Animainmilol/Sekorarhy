@@ -215,6 +215,13 @@ func newCameraController() *CameraController {
 	}
 }
 
+func (sc SquareController) getCenter() rl.Vector2 {
+	return rl.Vector2{
+		X: sc.Rectangle.X + sc.Rectangle.Width/2,
+		Y: sc.Rectangle.Y + sc.Rectangle.Height/2,
+	}
+}
+
 func main() {
 	rl.InitWindow(InitWindowWidth, InitWindowHeight, "Sekorathy")
 	rl.SetWindowState(rl.FlagWindowResizable)
@@ -245,8 +252,8 @@ func main() {
 		cameraController.updateCamera()
 		cameraFollow(
 			cameraController,
-			squareController.Rectangle.X+squareController.Rectangle.Width/2,
-			squareController.Rectangle.Y+squareController.Rectangle.Height/2,
+			squareController.getCenter().X,
+			squareController.getCenter().Y,
 		)
 
 		rl.ClearBackground(rl.Black)

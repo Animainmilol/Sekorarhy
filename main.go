@@ -150,6 +150,8 @@ func drawWorld(w World, cc CameraController) {
 			rl.DrawCircle(x*SquareSize+SquareSize/2, y*SquareSize+SquareSize/2, SquareSize/2, rl.White)
 		case "box":
 			rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, rl.White)
+		default:
+			rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, rl.Red)
 		}
 	}
 }

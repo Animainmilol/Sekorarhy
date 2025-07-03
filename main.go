@@ -147,9 +147,9 @@ func drawWorld(w World, cc CameraController) {
 		x, y := coordinates[0], coordinates[1]
 		switch tile.Type {
 		case "dot":
-			rl.DrawCircle(x*SquareSize+SquareSize/2, y*SquareSize+SquareSize/2, SquareSize/2, rl.White)
+			rl.DrawCircle(x*SquareSize+SquareSize/2, y*SquareSize+SquareSize/2, SquareSize/4, rl.White)
 		case "box":
-			rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, rl.White)
+			rl.DrawRectangle(x*SquareSize, y*SquareSize+20, SquareSize, SquareSize-40, rl.White)
 		default:
 			rl.DrawRectangle(x*SquareSize, y*SquareSize, SquareSize, SquareSize, rl.Red)
 		}
@@ -233,14 +233,6 @@ func main() {
 
 	world := World{
 		tiles: make(map[[2]int32]Tile),
-	}
-
-	// test
-	gridSize := int32(1000)
-	for y := int32(0); y < gridSize; y++ {
-		for x := int32(0); x < gridSize; x++ {
-			world.tiles[[2]int32{x, y}] = Tile{"dot"}
-		}
 	}
 
 	for !rl.WindowShouldClose() {

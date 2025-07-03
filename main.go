@@ -95,6 +95,35 @@ func (cc *CameraController) handleInput() {
 	}
 }
 
+func handleInput(sc *SquareController, cc *CameraController, s rl.Sound, w World) {
+	sc.handleInput(s)
+	cc.handleInput()
+	placeTilesUsingCursor(w, *cc)
+}
+
+func drawFrame(w World, sc SquareController, cc *CameraController) {
+	rl.BeginDrawing()
+
+	cc.updateCamera()
+	cameraFollow(
+		cc,
+		sc.getCenter().X,
+		sc.getCenter().Y,
+	)
+
+	rl.ClearBackground(rl.Black)
+
+	rl.BeginMode2D(cc.Camera)
+
+	drawWorld(w, *cc)
+
+	rl.DrawRectangleRec(sc.Rectangle, sc.Color)
+
+	rl.EndMode2D()
+
+	rl.EndDrawing()
+}
+
 func drawWorld(w World, cc CameraController) {
 	screenWidth := float32(rl.GetRenderWidth())
 	screenHeight := float32(rl.GetRenderHeight())
@@ -243,28 +272,7 @@ func main() {
 	}
 
 	for !rl.WindowShouldClose() {
-		squareController.handleInput(sound)
-		cameraController.handleInput()
-		placeTilesUsingCursor(world, *cameraController)
-
-		rl.BeginDrawing()
-
-		cameraController.updateCamera()
-		cameraFollow(
-			cameraController,
-			squareController.getCenter().X,
-			squareController.getCenter().Y,
-		)
-
-		rl.ClearBackground(rl.Black)
-
-		rl.BeginMode2D(cameraController.Camera)
-
-		drawWorld(world, *cameraController)
-		rl.DrawRectangleRec(squareController.Rectangle, squareController.Color)
-
-		rl.EndMode2D()
-
-		rl.EndDrawing()
+		handleInput(squareController, cameraController, sound, world)
+		drawFrame(world, *squareController, cameraController)
 	}
 }

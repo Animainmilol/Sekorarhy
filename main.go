@@ -56,6 +56,8 @@ func main() {
 		tiles: make(map[[2]int32]Tile),
 	}
 
+	buildMap(world)
+
 	for !rl.WindowShouldClose() {
 		handleInput(squareController, cameraController, sound, world)
 		drawFrame(world, *squareController, cameraController)

@@ -81,16 +81,47 @@ func DrawWorld(w World, cc CameraController) {
 
 func placeTilesUsingCursor(w World, cc CameraController) {
 	// Calculate world coordinates of cursor
-	cursorPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.Camera)
+	cursorelPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.Camera)
 
 	// Floor is for negatives
-	y := int32(math.Floor(float64(cursorPos.Y / SquareSize)))
-	x := int32(math.Floor(float64(cursorPos.X / SquareSize)))
+	y := int32(math.Floor(float64(cursorelPos.Y / SquareSize)))
+	x := int32(math.Floor(float64(cursorelPos.X / SquareSize)))
 
 	if rl.IsKeyDown(rl.KeyC) {
 		w.tiles[[2]int32{x, y}] = Tile{"dot"}
 	}
 	if rl.IsKeyDown(rl.KeyV) {
 		w.tiles[[2]int32{x, y}] = Tile{"box"}
+	}
+}
+
+func buildMap(w World) {
+	movementLine := "/WWdWDSddWWddWWWAsA"
+	var realPos [2]int32
+	var relPos [2]int32
+	for _, r := range movementLine {
+		switch r {
+		case '/':
+			relPos = [2]int32{0, 0}
+		case 'w':
+			relPos = [2]int32{0, -1}
+		case 'a':
+			relPos = [2]int32{-1, 0}
+		case 's':
+			relPos = [2]int32{0, 1}
+		case 'd':
+			relPos = [2]int32{1, 0}
+		case 'W':
+			relPos = [2]int32{0, -2}
+		case 'A':
+			relPos = [2]int32{-2, 0}
+		case 'S':
+			relPos = [2]int32{0, 2}
+		case 'D':
+			relPos = [2]int32{2, 0}
+		}
+		realPos[0] += relPos[0] * 2
+		realPos[1] += relPos[1] * 2
+		w.tiles[realPos] = Tile{"dot"}
 	}
 }

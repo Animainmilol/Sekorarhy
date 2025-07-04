@@ -96,7 +96,7 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 }
 
 func buildMap(w World) {
-	movementLine := "/WWdWDSddWWddWWWAsA"
+	movementLine := "/WWdWdDsSddWwDdWwwWaAaaWwdWaAaSsAAwWwDWWdDWWWdDWaAA"
 	var realPos [2]int32
 	var relPos [2]int32
 	for _, r := range movementLine {
@@ -124,4 +124,35 @@ func buildMap(w World) {
 		realPos[1] += relPos[1] * 2
 		w.tiles[realPos] = Tile{"dot"}
 	}
+}
+
+func recordMovement() string {
+	var movement string
+	if rl.IsKeyPressed(rl.KeyRight) {
+		movement = "d"
+	}
+	if rl.IsKeyPressed(rl.KeyLeft) {
+		movement = "a"
+	}
+	if rl.IsKeyPressed(rl.KeyDown) {
+		movement = "s"
+	}
+	if rl.IsKeyPressed(rl.KeyUp) {
+		movement = "w"
+	}
+
+	if rl.IsKeyPressed(rl.KeyD) {
+		movement = "D"
+	}
+	if rl.IsKeyPressed(rl.KeyA) {
+		movement = "A"
+	}
+	if rl.IsKeyPressed(rl.KeyS) {
+		movement = "S"
+	}
+	if rl.IsKeyPressed(rl.KeyW) {
+		movement = "W"
+	}
+
+	return movement
 }

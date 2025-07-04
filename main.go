@@ -5,6 +5,8 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
+
+	MovementLine = "/AAWDWWAAwwdDwWwaAaWwwDddSdDwWwwwDddSsssDdwwWaaAAAaaAAa"
 )
 
 func handleInput(sc *SquareController, cc *CameraController, s rl.Sound, w World) {
@@ -56,14 +58,14 @@ func main() {
 		tiles: make(map[[2]int32]Tile),
 	}
 
-	buildMap(world)
+	buildMap(world, MovementLine)
 
-	var movementLine string
+	var recordedMovementLine string
 
 	for !rl.WindowShouldClose() {
 		handleInput(squareController, cameraController, sound, world)
 		drawFrame(world, *squareController, cameraController)
-		movementLine += recordMovement()
-		rl.DrawText(movementLine, 10, 10, 20, rl.Green)
+		recordedMovementLine += recordMovement()
+		rl.DrawText(recordedMovementLine, 10, 10, 20, rl.Green)
 	}
 }

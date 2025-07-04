@@ -95,34 +95,35 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	}
 }
 
-func buildMap(w World) {
-	movementLine := "/WWdWdDsSddWwDdWwwWaAaaWwdWaAaSsAAwWwDWWdDWWWdDWaAA"
-	var realPos [2]int32
-	var relPos [2]int32
+func buildMap(w World, movementLine string) {
+	var realPos rl.Vector2
+	var relPos rl.Vector2
 	for _, r := range movementLine {
 		switch r {
 		case '/':
-			relPos = [2]int32{0, 0}
+			relPos = rl.Vector2{X: 0, Y: 0}
 		case 'w':
-			relPos = [2]int32{0, -1}
+			relPos = rl.Vector2{X: 0, Y: -1}
 		case 'a':
-			relPos = [2]int32{-1, 0}
+			relPos = rl.Vector2{X: -1, Y: 0}
 		case 's':
-			relPos = [2]int32{0, 1}
+			relPos = rl.Vector2{X: 0, Y: 1}
 		case 'd':
-			relPos = [2]int32{1, 0}
+			relPos = rl.Vector2{X: 1, Y: 0}
 		case 'W':
-			relPos = [2]int32{0, -2}
+			relPos = rl.Vector2{X: 0, Y: -2}
 		case 'A':
-			relPos = [2]int32{-2, 0}
+			relPos = rl.Vector2{X: -2, Y: 0}
 		case 'S':
-			relPos = [2]int32{0, 2}
+			relPos = rl.Vector2{X: 0, Y: 2}
 		case 'D':
-			relPos = [2]int32{2, 0}
+			relPos = rl.Vector2{X: 2, Y: 0}
 		}
-		realPos[0] += relPos[0] * 2
-		realPos[1] += relPos[1] * 2
-		w.tiles[realPos] = Tile{"dot"}
+		realPos.X += relPos.X * 2
+		realPos.Y += relPos.Y * 2
+		x := int32(realPos.X)
+		y := int32(realPos.Y)
+		w.tiles[[2]int32{x, y}] = Tile{"dot"}
 	}
 }
 

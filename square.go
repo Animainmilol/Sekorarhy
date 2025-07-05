@@ -23,38 +23,34 @@ func NewSquareController() *SquareController {
 }
 
 func (sc *SquareController) HandleInput(s rl.Sound) {
+	if rl.GetKeyPressed() != 0 {
+		rl.PlaySound(s)
+	}
+
 	if rl.IsKeyPressed(rl.KeyRight) {
 		sc.Rectangle.X += sc.TeleportDistance
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyLeft) {
 		sc.Rectangle.X -= sc.TeleportDistance
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyDown) {
 		sc.Rectangle.Y += sc.TeleportDistance
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyUp) {
 		sc.Rectangle.Y -= sc.TeleportDistance
-		rl.PlaySound(s)
 	}
 
 	if rl.IsKeyPressed(rl.KeyD) {
 		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyA) {
 		sc.Rectangle.X -= sc.TeleportDistance * LongTeleportMultiplier
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyS) {
 		sc.Rectangle.Y += sc.TeleportDistance * LongTeleportMultiplier
-		rl.PlaySound(s)
 	}
 	if rl.IsKeyPressed(rl.KeyW) {
 		sc.Rectangle.Y -= sc.TeleportDistance * LongTeleportMultiplier
-		rl.PlaySound(s)
 	}
 }
 

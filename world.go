@@ -126,34 +126,3 @@ func buildMap(w World, movementLine string) {
 		w.tiles[[2]int32{x, y}] = Tile{"dot"}
 	}
 }
-
-func recordMovement() string {
-	var movement string
-	if rl.IsKeyPressed(rl.KeyRight) {
-		movement = "d"
-	}
-	if rl.IsKeyPressed(rl.KeyLeft) {
-		movement = "a"
-	}
-	if rl.IsKeyPressed(rl.KeyDown) {
-		movement = "s"
-	}
-	if rl.IsKeyPressed(rl.KeyUp) {
-		movement = "w"
-	}
-
-	if rl.IsKeyPressed(rl.KeyD) {
-		movement = "D"
-	}
-	if rl.IsKeyPressed(rl.KeyA) {
-		movement = "A"
-	}
-	if rl.IsKeyPressed(rl.KeyS) {
-		movement = "S"
-	}
-	if rl.IsKeyPressed(rl.KeyW) {
-		movement = "W"
-	}
-
-	return movement
-}

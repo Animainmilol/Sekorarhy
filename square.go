@@ -58,6 +58,37 @@ func (sc *SquareController) HandleInput(s rl.Sound) {
 	}
 }
 
+func recordMovement() string {
+	var movement string
+	if rl.IsKeyPressed(rl.KeyRight) {
+		movement = "d"
+	}
+	if rl.IsKeyPressed(rl.KeyLeft) {
+		movement = "a"
+	}
+	if rl.IsKeyPressed(rl.KeyDown) {
+		movement = "s"
+	}
+	if rl.IsKeyPressed(rl.KeyUp) {
+		movement = "w"
+	}
+
+	if rl.IsKeyPressed(rl.KeyD) {
+		movement = "D"
+	}
+	if rl.IsKeyPressed(rl.KeyA) {
+		movement = "A"
+	}
+	if rl.IsKeyPressed(rl.KeyS) {
+		movement = "S"
+	}
+	if rl.IsKeyPressed(rl.KeyW) {
+		movement = "W"
+	}
+
+	return movement
+}
+
 func (sc SquareController) GetCenter() rl.Vector2 {
 	return rl.Vector2{
 		X: sc.Rectangle.X + sc.Rectangle.Width/2,

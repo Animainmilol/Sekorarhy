@@ -65,11 +65,8 @@ func main() {
 
 	buildMap(world, MovementLine)
 
-	var recordedMovementLine string
-
 	for !rl.WindowShouldClose() {
 		handleInput(squareController, cameraController, world)
 		drawFrame(world, *squareController, cameraController)
-		rl.DrawText(recordedMovementLine, 10, 10, 20, rl.Green)
 	}
 }

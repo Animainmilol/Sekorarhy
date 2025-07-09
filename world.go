@@ -87,7 +87,7 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	}
 }
 
-func buildMap(w World, movementLine string) {
+func (w World) buildMap(movementLine string) {
 	var realPos rl.Vector2
 	var relPos rl.Vector2
 	for _, r := range movementLine {

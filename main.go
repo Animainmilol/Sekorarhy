@@ -60,7 +60,7 @@ func main() {
 		tiles: make(map[[2]int32]Tile),
 	}
 
-	buildMap(world, MovementLine)
+	world.buildMap(MovementLine)
 
 	for !rl.WindowShouldClose() {
 		handleInput(squareController, cameraController, world)

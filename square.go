@@ -77,14 +77,15 @@ func (sc *SquareController) hasMovementsLeft(movementLine string) bool {
 }
 
 func (sc *SquareController) isCorrectMovement(movementLine string, movement rune) bool {
-	if sc.hasMovementsLeft(movementLine) {
-		current := movementLine[sc.Step]
-		if current == '/' {
-			sc.Step++
-		}
-		return current == byte(movement)
+	if !sc.hasMovementsLeft(movementLine) {
+		return false
 	}
-	return false
+
+	current := movementLine[sc.Step]
+	if current == '/' {
+		sc.Step++
+	}
+	return current == byte(movement)
 }
 
 func (sc *SquareController) move(movement rune) {

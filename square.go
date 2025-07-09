@@ -17,6 +17,17 @@ type SquareController struct {
 	Step             int32
 }
 
+var keyBindings = map[int32]rune{
+    rl.KeyRight: 'd',
+    rl.KeyLeft:  'a',
+    rl.KeyDown:  's',
+    rl.KeyUp:    'w',
+    rl.KeyD:     'D',
+    rl.KeyA:     'A',
+    rl.KeyS:     'S',
+    rl.KeyW:     'W',
+}
+
 func NewSquareController() *SquareController {
 	return &SquareController{
 		Rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
@@ -42,34 +53,12 @@ func (sc *SquareController) HandleInput(movementLine string) {
 }
 
 func getCurrentMovement() rune {
-	var movement rune
-	if rl.IsKeyPressed(rl.KeyRight) {
-		movement = 'd'
-	}
-	if rl.IsKeyPressed(rl.KeyLeft) {
-		movement = 'a'
-	}
-	if rl.IsKeyPressed(rl.KeyDown) {
-		movement = 's'
-	}
-	if rl.IsKeyPressed(rl.KeyUp) {
-		movement = 'w'
-	}
-
-	if rl.IsKeyPressed(rl.KeyD) {
-		movement = 'D'
-	}
-	if rl.IsKeyPressed(rl.KeyA) {
-		movement = 'A'
-	}
-	if rl.IsKeyPressed(rl.KeyS) {
-		movement = 'S'
-	}
-	if rl.IsKeyPressed(rl.KeyW) {
-		movement = 'W'
-	}
-
-	return movement
+    for key, movement := range keyBindings {
+        if rl.IsKeyPressed(key) {
+            return movement
+        }
+    }
+    return 0
 }
 
 func (sc *SquareController) hasMovementsLeft(movementLine string) bool {

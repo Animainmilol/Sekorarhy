@@ -34,7 +34,7 @@ func (sc *SquareController) HandleInput(movementLine string) {
 	if sc.isCorrectMovement(movementLine, movement) {
 		sc.move(movement)
 	} else {
-		if sc.Step < int32(len(movementLine)) {
+		if sc.hasMovementsLeft(movementLine) {
 			current := movementLine[sc.Step]
 			sc.move(rune(current))
 		}
@@ -72,8 +72,12 @@ func getCurrentMovement() rune {
 	return movement
 }
 
+func (sc *SquareController) hasMovementsLeft(movementLine string) bool {
+	return sc.Step < int32(len(movementLine))
+}
+
 func (sc *SquareController) isCorrectMovement(movementLine string, movement rune) bool {
-	if sc.Step < int32(len(movementLine)) {
+	if sc.hasMovementsLeft(movementLine) {
 		current := movementLine[sc.Step]
 		if current == '/' {
 			sc.Step++

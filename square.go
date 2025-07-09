@@ -54,7 +54,7 @@ func (sc *SquareController) HandleInput(s rl.Sound) {
 	}
 }
 
-func recordMovement() string {
+func getCurrentMovement() string {
 	var movement string
 	if rl.IsKeyPressed(rl.KeyRight) {
 		movement = "d"

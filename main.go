@@ -31,7 +31,7 @@ func drawFrame(w World, sc SquareController, cc *CameraController) {
 
 	rl.BeginMode2D(cc.Camera)
 
-	DrawWorld(w, *cc)
+	w.Draw(*cc)
 
 	rl.DrawRectangleRec(sc.Rectangle, sc.Color)
 

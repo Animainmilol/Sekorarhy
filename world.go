@@ -18,7 +18,7 @@ type Tile struct {
 	Type string
 }
 
-func DrawWorld(w World, cc CameraController) {
+func (w World) Draw(cc CameraController) {
 	screenWidth := float32(rl.GetRenderWidth())
 	screenHeight := float32(rl.GetRenderHeight())
 

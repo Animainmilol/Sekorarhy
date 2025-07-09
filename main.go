@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const (
 	InitWindowWidth  = 800
@@ -9,8 +11,11 @@ const (
 	MovementLine = "/AAWDWWAAwwdDwWwaAaWwwDddSdDwWwwwDddSsssDdwwWaaAAAaaAAa"
 )
 
-func handleInput(sc *SquareController, cc *CameraController, s rl.Sound, w World) {
-	sc.HandleInput(s)
+func handleInput(sc *SquareController, cc *CameraController, w World) {
+	movement := getCurrentMovement()
+	if movement != 0 && sc.isCorrectMovement(MovementLine, movement) {
+		sc.move(movement)
+	}
 	cc.HandleInput()
 	placeTilesUsingCursor(w, *cc)
 }
@@ -63,11 +68,8 @@ func main() {
 	var recordedMovementLine string
 
 	for !rl.WindowShouldClose() {
-		handleInput(squareController, cameraController, sound, world)
+		handleInput(squareController, cameraController, world)
 		drawFrame(world, *squareController, cameraController)
-		if getCurrentMovement() != 0 {
-			recordedMovementLine += string(getCurrentMovement())
-		}
 		rl.DrawText(recordedMovementLine, 10, 10, 20, rl.Green)
 	}
 }

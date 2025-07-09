@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const (
 	SquareSize             = 50
@@ -20,38 +22,6 @@ func NewSquareController() *SquareController {
 		Rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
 		Color:            rl.White,
 		TeleportDistance: TeleportDistance,
-	}
-}
-
-func (sc *SquareController) HandleInput(s rl.Sound) {
-	if rl.GetKeyPressed() != 0 {
-		rl.PlaySound(s)
-	}
-
-	if rl.IsKeyPressed(rl.KeyRight) {
-		sc.Rectangle.X += sc.TeleportDistance
-	}
-	if rl.IsKeyPressed(rl.KeyLeft) {
-		sc.Rectangle.X -= sc.TeleportDistance
-	}
-	if rl.IsKeyPressed(rl.KeyDown) {
-		sc.Rectangle.Y += sc.TeleportDistance
-	}
-	if rl.IsKeyPressed(rl.KeyUp) {
-		sc.Rectangle.Y -= sc.TeleportDistance
-	}
-
-	if rl.IsKeyPressed(rl.KeyD) {
-		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
-	}
-	if rl.IsKeyPressed(rl.KeyA) {
-		sc.Rectangle.X -= sc.TeleportDistance * LongTeleportMultiplier
-	}
-	if rl.IsKeyPressed(rl.KeyS) {
-		sc.Rectangle.Y += sc.TeleportDistance * LongTeleportMultiplier
-	}
-	if rl.IsKeyPressed(rl.KeyW) {
-		sc.Rectangle.Y -= sc.TeleportDistance * LongTeleportMultiplier
 	}
 }
 
@@ -84,6 +54,40 @@ func getCurrentMovement() rune {
 	}
 
 	return movement
+}
+
+func (sc *SquareController) isCorrectMovement(movementLine string, movement rune) bool {
+	for sc.Step < int32(len(movementLine)) {
+		current := movementLine[sc.Step]
+		if current == '/' {
+			sc.Step++
+			continue
+		}
+		return current == byte(movement)
+	}
+	return false
+}
+
+func (sc *SquareController) move(movement rune) {
+	switch movement {
+	case 'w':
+		sc.Rectangle.Y -= sc.TeleportDistance
+	case 'a':
+		sc.Rectangle.X -= sc.TeleportDistance
+	case 's':
+		sc.Rectangle.Y += sc.TeleportDistance
+	case 'd':
+		sc.Rectangle.X += sc.TeleportDistance
+	case 'W':
+		sc.Rectangle.Y -= sc.TeleportDistance * LongTeleportMultiplier
+	case 'A':
+		sc.Rectangle.X -= sc.TeleportDistance * LongTeleportMultiplier
+	case 'S':
+		sc.Rectangle.Y += sc.TeleportDistance * LongTeleportMultiplier
+	case 'D':
+		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
+	}
+	sc.Step++
 }
 
 func (sc SquareController) GetCenter() rl.Vector2 {

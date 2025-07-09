@@ -7,6 +7,7 @@ import (
 const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
+	TargetFPS = 240
 
 	MovementLine = "/AAWDWWAAwwdDwWwaAaWwwDddSdDwWwwwDddSsssDdwwWaaAAAaaAAa"
 )
@@ -45,7 +46,7 @@ func main() {
 	rl.SetWindowState(rl.FlagWindowResizable)
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(240)
+	rl.SetTargetFPS(TargetFPS)
 
 	cameraController := NewCameraController()
 	squareController := NewSquareController()

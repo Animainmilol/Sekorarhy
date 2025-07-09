@@ -45,7 +45,7 @@ func (cc *CameraController) HandleInput() {
 	}
 }
 
-func (cc *CameraController) UpdateCamera() {
+func (cc *CameraController) Update() {
 	// Center the camera
 	screenWidth := float32(rl.GetRenderWidth())
 	screenHeight := float32(rl.GetRenderHeight())

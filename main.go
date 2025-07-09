@@ -21,7 +21,7 @@ func handleInput(sc *SquareController, cc *CameraController, w World) {
 func drawFrame(w World, sc SquareController, cc *CameraController) {
 	rl.BeginDrawing()
 
-	cc.UpdateCamera()
+	cc.Update()
 	CameraFollow(
 		cc,
 		sc.GetCenter().X,

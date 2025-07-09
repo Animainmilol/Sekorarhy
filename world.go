@@ -35,18 +35,10 @@ func DrawWorld(w World, cc CameraController) {
 	maxY := corners[0].Y
 
 	for _, corner := range corners[1:] {
-		if corner.X < minX {
-			minX = corner.X
-		}
-		if corner.X > maxX {
-			maxX = corner.X
-		}
-		if corner.Y < minY {
-			minY = corner.Y
-		}
-		if corner.Y > maxY {
-			maxY = corner.Y
-		}
+		minX = min(minX, corner.X)
+		maxX = max(maxX, corner.X)
+		minY = min(minY, corner.Y)
+		maxY = max(maxY, corner.Y)
 	}
 
 	// Convert to tile coordinates

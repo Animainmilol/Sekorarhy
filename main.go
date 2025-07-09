@@ -22,8 +22,7 @@ func drawFrame(w World, sc SquareController, cc *CameraController) {
 	rl.BeginDrawing()
 
 	cc.Update()
-	CameraFollow(
-		cc,
+	cc.Follow(
 		sc.GetCenter().X,
 		sc.GetCenter().Y,
 	)

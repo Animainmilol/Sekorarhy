@@ -62,7 +62,7 @@ func (cc *CameraController) Update() {
 	cc.Camera.Rotation = cc.ManualRotation
 }
 
-func CameraFollow(cc *CameraController, x float32, y float32) {
+func (cc *CameraController) Follow(x float32, y float32) {
 	cameraSpeed := cc.Speed * rl.GetFrameTime()
 	cc.Camera.Target.X += (x - cc.Camera.Target.X) * cameraSpeed
 	cc.Camera.Target.Y += (y - cc.Camera.Target.Y) * cameraSpeed

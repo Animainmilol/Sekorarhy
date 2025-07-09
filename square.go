@@ -12,6 +12,7 @@ type SquareController struct {
 	Rectangle        rl.Rectangle
 	Color            rl.Color
 	TeleportDistance float32
+	Step             int32
 }
 
 func NewSquareController() *SquareController {
@@ -54,32 +55,32 @@ func (sc *SquareController) HandleInput(s rl.Sound) {
 	}
 }
 
-func getCurrentMovement() string {
-	var movement string
+func getCurrentMovement() rune {
+	var movement rune
 	if rl.IsKeyPressed(rl.KeyRight) {
-		movement = "d"
+		movement = 'd'
 	}
 	if rl.IsKeyPressed(rl.KeyLeft) {
-		movement = "a"
+		movement = 'a'
 	}
 	if rl.IsKeyPressed(rl.KeyDown) {
-		movement = "s"
+		movement = 's'
 	}
 	if rl.IsKeyPressed(rl.KeyUp) {
-		movement = "w"
+		movement = 'w'
 	}
 
 	if rl.IsKeyPressed(rl.KeyD) {
-		movement = "D"
+		movement = 'D'
 	}
 	if rl.IsKeyPressed(rl.KeyA) {
-		movement = "A"
+		movement = 'A'
 	}
 	if rl.IsKeyPressed(rl.KeyS) {
-		movement = "S"
+		movement = 'S'
 	}
 	if rl.IsKeyPressed(rl.KeyW) {
-		movement = "W"
+		movement = 'W'
 	}
 
 	return movement

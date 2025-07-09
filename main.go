@@ -65,7 +65,9 @@ func main() {
 	for !rl.WindowShouldClose() {
 		handleInput(squareController, cameraController, sound, world)
 		drawFrame(world, *squareController, cameraController)
-		recordedMovementLine += getCurrentMovement()
+		if getCurrentMovement() != 0 {
+			recordedMovementLine += string(getCurrentMovement())
+		}
 		rl.DrawText(recordedMovementLine, 10, 10, 20, rl.Green)
 	}
 }

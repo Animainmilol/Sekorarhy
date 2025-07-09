@@ -12,10 +12,7 @@ const (
 )
 
 func handleInput(sc *SquareController, cc *CameraController, w World) {
-	movement := getCurrentMovement()
-	if movement != 0 && sc.isCorrectMovement(MovementLine, movement) {
-		sc.move(movement)
-	}
+	sc.HandleInput(MovementLine)
 	cc.HandleInput()
 	placeTilesUsingCursor(w, *cc)
 }

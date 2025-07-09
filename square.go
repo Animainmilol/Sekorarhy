@@ -25,6 +25,17 @@ func NewSquareController() *SquareController {
 	}
 }
 
+func (sc *SquareController) HandleInput(movementLine string) {
+	movement := getCurrentMovement()
+	if movement == 0 {
+		return
+	}
+
+	if sc.isCorrectMovement(movementLine, movement) {
+		sc.move(movement)
+	}
+}
+
 func getCurrentMovement() rune {
 	var movement rune
 	if rl.IsKeyPressed(rl.KeyRight) {

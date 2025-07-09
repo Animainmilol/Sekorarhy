@@ -32,11 +32,11 @@ func (sc *SquareController) HandleInput(movementLine string) {
 	}
 
 	if sc.isCorrectMovement(movementLine, movement) {
-		sc.move(movement)
+		sc.executeMovement(movement)
 	} else {
 		if sc.hasMovementsLeft(movementLine) {
 			current := movementLine[sc.Step]
-			sc.move(rune(current))
+			sc.executeMovement(rune(current))
 		}
 	}
 }
@@ -88,7 +88,7 @@ func (sc *SquareController) isCorrectMovement(movementLine string, movement rune
 	return current == byte(movement)
 }
 
-func (sc *SquareController) move(movement rune) {
+func (sc *SquareController) executeMovement(movement rune) {
 	switch movement {
 	case 'w':
 		sc.Rectangle.Y -= sc.TeleportDistance

@@ -7,7 +7,7 @@ import (
 const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
-	TargetFPS = 240
+	TargetFPS        = 240
 
 	MovementLine = "/AAWDWWAAwwdDwWwaAaWwwDddSdDwWwwwDddSsssDdwwWaaAAAaaAAa"
 )

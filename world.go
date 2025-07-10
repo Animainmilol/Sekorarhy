@@ -90,10 +90,9 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 func (w World) buildMap(movementLine string) {
 	var realPos rl.Vector2
 	var relPos rl.Vector2
+	w.tiles[[2]int32{0, 0}] = Tile{"dot"}
 	for _, r := range movementLine {
 		switch r {
-		case '/':
-			relPos = rl.Vector2{X: 0, Y: 0}
 		case 'w':
 			relPos = rl.Vector2{X: 0, Y: -1}
 		case 'a':

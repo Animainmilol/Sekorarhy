@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -18,14 +20,14 @@ type SquareController struct {
 }
 
 var keyBindings = map[int32]rune{
-    rl.KeyRight: 'd',
-    rl.KeyLeft:  'a',
-    rl.KeyDown:  's',
-    rl.KeyUp:    'w',
-    rl.KeyD:     'D',
-    rl.KeyA:     'A',
-    rl.KeyS:     'S',
-    rl.KeyW:     'W',
+	rl.KeyRight: 'd',
+	rl.KeyLeft:  'a',
+	rl.KeyDown:  's',
+	rl.KeyUp:    'w',
+	rl.KeyD:     'D',
+	rl.KeyA:     'A',
+	rl.KeyS:     'S',
+	rl.KeyW:     'W',
 }
 
 func NewSquareController() *SquareController {
@@ -42,23 +44,25 @@ func (sc *SquareController) HandleInput(movementLine string) {
 		return
 	}
 
-	if sc.isCorrectMovement(movementLine, movement) {
-		sc.executeMovement(movement)
-	} else {
-		if sc.hasMovementsLeft(movementLine) {
-			current := movementLine[sc.Step]
-			sc.executeMovement(rune(current))
-		}
+	if !sc.hasMovementsLeft(movementLine) {
+		return
 	}
+
+	sc.executeMovement(rune(movementLine[sc.Step]))
+	if !sc.isCorrectMovement(movementLine, movement) {
+		fmt.Println("nahh")
+	}
+
+	sc.Step += 1
 }
 
 func getCurrentMovement() rune {
-    for key, movement := range keyBindings {
-        if rl.IsKeyPressed(key) {
-            return movement
-        }
-    }
-    return 0
+	for key, movement := range keyBindings {
+		if rl.IsKeyPressed(key) {
+			return movement
+		}
+	}
+	return 0
 }
 
 func (sc *SquareController) hasMovementsLeft(movementLine string) bool {
@@ -70,11 +74,7 @@ func (sc *SquareController) isCorrectMovement(movementLine string, movement rune
 		return false
 	}
 
-	current := movementLine[sc.Step]
-	if current == '/' {
-		sc.Step++
-	}
-	return current == byte(movement)
+	return movementLine[sc.Step] == byte(movement)
 }
 
 func (sc *SquareController) executeMovement(movement rune) {
@@ -96,7 +96,6 @@ func (sc *SquareController) executeMovement(movement rune) {
 	case 'D':
 		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
 	}
-	sc.Step++
 }
 
 func (sc SquareController) GetCenter() rl.Vector2 {

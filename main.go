@@ -7,9 +7,9 @@ import (
 const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
-	TargetFPS        = 240
+	TargetFPS        = 1024
 
-	MovementLine = "/AAWDWWAAwwdDwWwaAaWwwDddSdDwWwwwDddSsssDdwwWaaAAAaaAAa"
+	MovementLine = "WWWWDDDDWDWWDWDWDWDWDWDsSSSSDDDSDSAAASASASASSASASASASASSASAS"
 )
 
 func handleInput(sc *SquareController, cc *CameraController, w World) {

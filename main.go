@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -9,7 +11,7 @@ const (
 	InitWindowHeight = 450
 	TargetFPS        = 1024
 
-	MovementLine = "WWWWDDDDWDWWDWDWDWDWDWDsSSSSDDDSDSAAASASASASSASASASASASSASAS"
+	MovementLine = "DwdssdDwwddsdWddwwDSDSdwd"
 )
 
 func handleInput(sc *SquareController, cc *CameraController, w World) {
@@ -62,7 +64,11 @@ func main() {
 
 	world.buildMap(MovementLine)
 
+	startTime := time.Now()
+
 	for !rl.WindowShouldClose() {
+		timeElapsed := time.Since(startTime)
+		rl.DrawText(timeElapsed.String(), 10, 10, 20, rl.Green)
 		handleInput(squareController, cameraController, world)
 		drawFrame(world, *squareController, cameraController)
 	}

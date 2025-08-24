@@ -32,7 +32,7 @@ func drawFrame(w World, sc SquareController, cc *CameraController) {
 	rl.BeginMode2D(cc.Camera)
 
 	w.Draw(*cc)
-	sc.Draw()
+	sc.Draw(w)
 
 	rl.EndMode2D()
 
@@ -47,15 +47,12 @@ func main() {
 
 	cameraController := NewCameraController()
 	squareController := NewSquareController()
+	world := NewWorld()
 
 	rl.InitAudioDevice()
 	defer rl.CloseAudioDevice()
 	sound := rl.LoadSound("sound.wav")
 	defer rl.UnloadSound(sound)
-
-	world := World{
-		tiles: make(map[[2]int32]Tile),
-	}
 
 	startTime := time.Now()
 

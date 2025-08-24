@@ -11,7 +11,8 @@ const (
 )
 
 type SquareController struct {
-	Rectangle        rl.Rectangle
+	GridPos          rl.Vector2
+	Size             float32
 	Color            rl.Color
 	TeleportDistance float32
 	Step             int32
@@ -30,7 +31,8 @@ var keyBindings = map[int32]rune{
 
 func NewSquareController() *SquareController {
 	return &SquareController{
-		Rectangle:        rl.NewRectangle(0, 0, SquareSize, SquareSize),
+		GridPos:          rl.NewVector2(0, 0),
+		Size:             SquareSize,
 		Color:            rl.White,
 		TeleportDistance: TeleportDistance,
 	}
@@ -54,31 +56,40 @@ func getCurrentMovement() rune {
 func (sc *SquareController) executeMovement(movement rune) {
 	switch movement {
 	case 'w':
-		sc.Rectangle.Y -= sc.TeleportDistance * SquareSize
+		sc.GridPos.Y -= sc.TeleportDistance
 	case 'a':
-		sc.Rectangle.X -= sc.TeleportDistance * SquareSize
+		sc.GridPos.X -= sc.TeleportDistance
 	case 's':
-		sc.Rectangle.Y += sc.TeleportDistance * SquareSize
+		sc.GridPos.Y += sc.TeleportDistance
 	case 'd':
-		sc.Rectangle.X += sc.TeleportDistance * SquareSize
+		sc.GridPos.X += sc.TeleportDistance
 	case 'W':
-		sc.Rectangle.Y -= sc.TeleportDistance * SquareSize * LongTeleportMultiplier
+		sc.GridPos.Y -= sc.TeleportDistance * LongTeleportMultiplier
 	case 'A':
-		sc.Rectangle.X -= sc.TeleportDistance * SquareSize * LongTeleportMultiplier
+		sc.GridPos.X -= sc.TeleportDistance * LongTeleportMultiplier
 	case 'S':
-		sc.Rectangle.Y += sc.TeleportDistance * SquareSize * LongTeleportMultiplier
+		sc.GridPos.Y += sc.TeleportDistance * LongTeleportMultiplier
 	case 'D':
-		sc.Rectangle.X += sc.TeleportDistance * SquareSize * LongTeleportMultiplier
+		sc.GridPos.X += sc.TeleportDistance * LongTeleportMultiplier
 	}
 }
 
-func (sc SquareController) Draw() {
-	rl.DrawRectangleRec(sc.Rectangle, sc.Color)
+func (sc SquareController) GetDrawPosition() rl.Vector2 {
+	return rl.Vector2{
+		X: sc.GridPos.X * sc.Size,
+		Y: sc.GridPos.Y * sc.Size,
+	}
+}
+
+func (sc SquareController) Draw(w World) {
+	drawPos := sc.GetDrawPosition()
+	rl.DrawRectangleV(drawPos, rl.NewVector2(sc.Size, sc.Size), sc.Color)
 }
 
 func (sc SquareController) GetCenter() rl.Vector2 {
+	drawPos := sc.GetDrawPosition()
 	return rl.Vector2{
-		X: sc.Rectangle.X + sc.Rectangle.Width/2,
-		Y: sc.Rectangle.Y + sc.Rectangle.Height/2,
+		X: drawPos.X + sc.Size/2,
+		Y: drawPos.Y + sc.Size/2,
 	}
 }

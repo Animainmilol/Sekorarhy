@@ -11,11 +11,17 @@ const (
 )
 
 type World struct {
-	tiles map[[2]int32]Tile
+	Tiles map[[2]int32]Tile
 }
 
 type Tile struct {
 	Type string
+}
+
+func NewWorld() World {
+	return World{
+		Tiles: make(map[[2]int32]Tile),
+	}
 }
 
 func (w World) Draw(cc CameraController) {
@@ -51,7 +57,7 @@ func (w World) Draw(cc CameraController) {
 
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			tile, exists := w.tiles[[2]int32{x, y}]
+			tile, exists := w.Tiles[[2]int32{x, y}]
 			if exists {
 				visibleTiles[[2]int32{x, y}] = tile
 			}
@@ -71,6 +77,7 @@ func (w World) Draw(cc CameraController) {
 	}
 }
 
+// We DONT need this actually like at all
 func placeTilesUsingCursor(w World, cc CameraController) {
 	// Calculate world coordinates of cursor
 	cursorelPos := rl.GetScreenToWorld2D(rl.GetMousePosition(), cc.Camera)
@@ -80,10 +87,10 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	x := int32(math.Floor(float64(cursorelPos.X / SquareSize)))
 
 	if rl.IsKeyDown(rl.KeyC) {
-		w.tiles[[2]int32{x, y}] = Tile{"dot"}
+		w.Tiles[[2]int32{x, y}] = Tile{"dot"}
 	}
 	if rl.IsKeyDown(rl.KeyV) {
-		w.tiles[[2]int32{x, y}] = Tile{"box"}
+		w.Tiles[[2]int32{x, y}] = Tile{"box"}
 	}
 }
 

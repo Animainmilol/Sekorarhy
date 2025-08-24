@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 const (
 	SquareSize             = 50
-	TeleportDistance       = 100
+	TeleportDistance       = 2
 	LongTeleportMultiplier = 2
 )
 
@@ -38,21 +36,9 @@ func NewSquareController() *SquareController {
 	}
 }
 
-func (sc *SquareController) HandleInput(movementLine string) {
+func (sc *SquareController) HandleInput() {
 	movement := getCurrentMovement()
-	if movement == 0 {
-		return
-	}
-
-	if !sc.hasMovementsLeft(movementLine) {
-		return
-	}
-
-	sc.executeMovement(rune(movementLine[sc.Step]))
-	if !sc.isCorrectMovement(movementLine, movement) {
-		fmt.Println("nahh")
-	}
-
+	sc.executeMovement(movement)
 	sc.Step += 1
 }
 
@@ -65,37 +51,29 @@ func getCurrentMovement() rune {
 	return 0
 }
 
-func (sc *SquareController) hasMovementsLeft(movementLine string) bool {
-	return sc.Step < int32(len(movementLine))
-}
-
-func (sc *SquareController) isCorrectMovement(movementLine string, movement rune) bool {
-	if !sc.hasMovementsLeft(movementLine) {
-		return false
-	}
-
-	return movementLine[sc.Step] == byte(movement)
-}
-
 func (sc *SquareController) executeMovement(movement rune) {
 	switch movement {
 	case 'w':
-		sc.Rectangle.Y -= sc.TeleportDistance
+		sc.Rectangle.Y -= sc.TeleportDistance * SquareSize
 	case 'a':
-		sc.Rectangle.X -= sc.TeleportDistance
+		sc.Rectangle.X -= sc.TeleportDistance * SquareSize
 	case 's':
-		sc.Rectangle.Y += sc.TeleportDistance
+		sc.Rectangle.Y += sc.TeleportDistance * SquareSize
 	case 'd':
-		sc.Rectangle.X += sc.TeleportDistance
+		sc.Rectangle.X += sc.TeleportDistance * SquareSize
 	case 'W':
-		sc.Rectangle.Y -= sc.TeleportDistance * LongTeleportMultiplier
+		sc.Rectangle.Y -= sc.TeleportDistance * SquareSize * LongTeleportMultiplier
 	case 'A':
-		sc.Rectangle.X -= sc.TeleportDistance * LongTeleportMultiplier
+		sc.Rectangle.X -= sc.TeleportDistance * SquareSize * LongTeleportMultiplier
 	case 'S':
-		sc.Rectangle.Y += sc.TeleportDistance * LongTeleportMultiplier
+		sc.Rectangle.Y += sc.TeleportDistance * SquareSize * LongTeleportMultiplier
 	case 'D':
-		sc.Rectangle.X += sc.TeleportDistance * LongTeleportMultiplier
+		sc.Rectangle.X += sc.TeleportDistance * SquareSize * LongTeleportMultiplier
 	}
+}
+
+func (sc SquareController) Draw() {
+	rl.DrawRectangleRec(sc.Rectangle, sc.Color)
 }
 
 func (sc SquareController) GetCenter() rl.Vector2 {

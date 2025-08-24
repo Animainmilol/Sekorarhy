@@ -87,33 +87,33 @@ func placeTilesUsingCursor(w World, cc CameraController) {
 	}
 }
 
-func (w World) buildMap(movementLine string) {
-	var realPos rl.Vector2
-	var relPos rl.Vector2
-	w.tiles[[2]int32{0, 0}] = Tile{"dot"}
-	for _, r := range movementLine {
-		switch r {
-		case 'w':
-			relPos = rl.Vector2{X: 0, Y: -1}
-		case 'a':
-			relPos = rl.Vector2{X: -1, Y: 0}
-		case 's':
-			relPos = rl.Vector2{X: 0, Y: 1}
-		case 'd':
-			relPos = rl.Vector2{X: 1, Y: 0}
-		case 'W':
-			relPos = rl.Vector2{X: 0, Y: -2}
-		case 'A':
-			relPos = rl.Vector2{X: -2, Y: 0}
-		case 'S':
-			relPos = rl.Vector2{X: 0, Y: 2}
-		case 'D':
-			relPos = rl.Vector2{X: 2, Y: 0}
-		}
-		realPos.X += relPos.X * 2
-		realPos.Y += relPos.Y * 2
-		x := int32(realPos.X)
-		y := int32(realPos.Y)
-		w.tiles[[2]int32{x, y}] = Tile{"dot"}
-	}
-}
+//func (w World) buildMap(movementLine string) {
+//	var realPos rl.Vector2
+//	var relPos rl.Vector2
+//	w.tiles[[2]int32{0, 0}] = Tile{"dot"}
+//	for _, r := range movementLine {
+//		switch r {
+//		case 'w':
+//			relPos = rl.Vector2{X: 0, Y: -1}
+//		case 'a':
+//			relPos = rl.Vector2{X: -1, Y: 0}
+//		case 's':
+//			relPos = rl.Vector2{X: 0, Y: 1}
+//		case 'd':
+//			relPos = rl.Vector2{X: 1, Y: 0}
+//		case 'W':
+//			relPos = rl.Vector2{X: 0, Y: -2}
+//		case 'A':
+//			relPos = rl.Vector2{X: -2, Y: 0}
+//		case 'S':
+//			relPos = rl.Vector2{X: 0, Y: 2}
+//		case 'D':
+//			relPos = rl.Vector2{X: 2, Y: 0}
+//		}
+//		realPos.X += relPos.X * 2
+//		realPos.Y += relPos.Y * 2
+//		x := int32(realPos.X)
+//		y := int32(realPos.Y)
+//		w.tiles[[2]int32{x, y}] = Tile{"dot"}
+//	}
+//}

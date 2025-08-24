@@ -10,12 +10,10 @@ const (
 	InitWindowWidth  = 800
 	InitWindowHeight = 450
 	TargetFPS        = 1024
-
-	MovementLine = "DwdssdDwwddsdWddwwDSDSdwd"
 )
 
 func handleInput(sc *SquareController, cc *CameraController, w World) {
-	sc.HandleInput(MovementLine)
+	sc.HandleInput()
 	cc.HandleInput()
 	placeTilesUsingCursor(w, *cc)
 }
@@ -34,8 +32,7 @@ func drawFrame(w World, sc SquareController, cc *CameraController) {
 	rl.BeginMode2D(cc.Camera)
 
 	w.Draw(*cc)
-
-	rl.DrawRectangleRec(sc.Rectangle, sc.Color)
+	sc.Draw()
 
 	rl.EndMode2D()
 
@@ -46,7 +43,6 @@ func main() {
 	rl.InitWindow(InitWindowWidth, InitWindowHeight, "Sekorathy")
 	rl.SetWindowState(rl.FlagWindowResizable)
 	defer rl.CloseWindow()
-
 	rl.SetTargetFPS(TargetFPS)
 
 	cameraController := NewCameraController()
@@ -54,15 +50,12 @@ func main() {
 
 	rl.InitAudioDevice()
 	defer rl.CloseAudioDevice()
-
 	sound := rl.LoadSound("sound.wav")
 	defer rl.UnloadSound(sound)
 
 	world := World{
 		tiles: make(map[[2]int32]Tile),
 	}
-
-	world.buildMap(MovementLine)
 
 	startTime := time.Now()
 
